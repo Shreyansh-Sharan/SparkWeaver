@@ -47,11 +47,17 @@ if __name__ == "__main__":
         # SELECT DATAFRAME
         {"id": "SELECTED_COLUMNS", "function": "select_dataframe", "params": {"columns": ["ProductID","LineTotal"]}, "inputs": ["PARQUET_SOURCE"]},
         
+        {"id": "ReplaceNULL_columns", "function": "replace_null_with_value", "params": {"replace_with_value": {"Color":"Black"}}, "inputs": ["CSV_SOURCE"]}
         
     #     # JOIN TABLE TEST
-        {"id": "Join_Sales_Order_With_Product", "function": "join", "params": {"Input0": "ProductID","Input1":"ProductID", "joinType":"right","Suffix":"TestSuffix"}, "inputs": ["CSV_SOURCE", "PARQUET_SOURCE"]},
+        # {"id": "Join_Sales_Order_With_Product", "function": "join", "params": {"Input0": "ProductID","Input1":"ProductID", "joinType":"right","Suffix":"TestSuffix"}, "inputs": ["CSV_SOURCE", "PARQUET_SOURCE"]},
         
-        {"id": "Join_Product_With_Other", "function": "join", "params": {"Input0": "ProductID","Input1":"ProductID", "joinType":"left","Suffix":"secondTestSuffix"}, "inputs": ["Join_Sales_Order_With_Product", "SQL_SOURCE"]},
+        # {"id": "Join_Product_With_Other", "function": "join", "params": {"Input0": "ProductID","Input1":"ProductID", "joinType":"left","Suffix":"secondTestSuffix"}, "inputs": ["Join_Sales_Order_With_Product", "SQL_SOURCE"]},
+
+        # {"id": "Join_Product_With_selected_columns", "function": "join", "params": {"Input0": "ProductID","Input1":"ProductID", "joinType":"left","Suffix":"secondTestSuffix"}, "inputs": ["Join_Product_With_Other", "SELECTED_COLUMNS"]},
+        
+        # 
+      
         
     #     {"id": "Join_Product_With_Other_test", "function": "join", "params": {"Input0": "ProductID","Input1":"ProductID", "joinType":"inner"}, "inputs": ["Join_Sales_Order_With_Product", "Join_Product_With_Other"]},
         
@@ -59,7 +65,7 @@ if __name__ == "__main__":
     #     {"id": "Drops", "function": "drop_column", "params": {"column":"ProductNumber"}, "inputs": ["Join_Product_With_Other_test"]},
     #     {"id": "Drops_col2", "function": "drop_column", "params": {"column":"MakeFlag"}, "inputs": ["Drops"]},
     #     {"id": "Drops_col3", "function": "drop_column", "params": {"column":"ProductID"}, "inputs": ["Drops_col2"]}
-       ]
+    ]
     }
 
     # Build and execute the graph

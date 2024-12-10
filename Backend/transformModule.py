@@ -66,6 +66,11 @@ class TransformationModule(BaseModule):
 
             node.output = inputs[0].select(columns_to_select)
 
+        elif node.spark_function == "replace_null_with_value":
+            if len(inputs) != 1:
+                raise ValueError("Replace null operation requires exactly one input DataFrame.")
+            node.output = inputs[0].na.fill(node.params["replace_with_value"])
+
         else:
                 raise ValueError(f"Unsupported transformation function: {node.spark_function}")
 
