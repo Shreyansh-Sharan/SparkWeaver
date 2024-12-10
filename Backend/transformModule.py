@@ -16,8 +16,8 @@ class TransformationModule(BaseModule):
                 raise ValueError("Join operation requires exactly two input DataFrames.")
             
             input0 = inputs[0].alias("t1")
-            random_alias = f"t2_{uuid.uuid4().hex[:8]}"  # Generate a unique alias for the second DataFrame
-            input1 = inputs[1].alias(random_alias)
+            random_suffix = node.params["Suffix"]  # Generate a unique alias for the second DataFrame
+            input1 = inputs[1].alias(random_suffix)
 
             # Validate that Input0 and Input1 columns exist in the respective DataFrames
             if node.params['Input0'] not in inputs[0].columns:
@@ -34,7 +34,7 @@ class TransformationModule(BaseModule):
             # Handle duplicate columns by renaming or excluding them
             columns_from_t1 = [f"t1.{col} as {col}" for col in inputs[0].columns]
             columns_from_t2 = [
-                f"{random_alias}.{col} as {col}_{random_alias}" 
+                f"{random_suffix}.{col} as {col}_{random_suffix}" 
                 for col in inputs[1].columns if col != node.params['Input1']
             ]
             node.output = joined_df.selectExpr(*columns_from_t1, *columns_from_t2)
