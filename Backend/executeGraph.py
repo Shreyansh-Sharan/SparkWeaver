@@ -1,5 +1,10 @@
 # Databricks notebook source
 # MAGIC %run ./readModule
+# MAGIC
+
+# COMMAND ----------
+
+# MAGIC %run ./transformModule
 
 # COMMAND ----------
 
@@ -9,7 +14,7 @@ class ExecuteGraph:
         self.spark = spark
         self.modules = {
             "read": ReadModule(),
-            #"transform": TransformationModule()
+            "transform": TransformationModule()
         }
 
     def process_node(self, node, dataframes):
