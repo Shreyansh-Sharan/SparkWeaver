@@ -21,7 +21,7 @@ class ExecuteGraph:
         # Determine the module
         if node.spark_function.startswith("read"):
             module = self.modules["read"]
-        elif node.spark_function in ["join", "drop_column","select_dataframe"]:
+        elif node.spark_function in ["join", "drop_column","select_dataframe","replace_null_with_value"]:
             module = self.modules["transform"]
         else:
             raise ValueError(f"Unsupported function: {node.spark_function}")
