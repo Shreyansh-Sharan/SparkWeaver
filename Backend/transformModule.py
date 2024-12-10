@@ -3,7 +3,7 @@
 
 # COMMAND ----------
 
-#import uuid
+import uuid
 class TransformationModule(BaseModule):
     def process(self, node, spark, dataframes):
         # Fetch input DataFrames for the node
@@ -52,6 +52,20 @@ class TransformationModule(BaseModule):
             # Drop the specified column
             node.output = inputs[0].drop(column_to_drop)
         
+        elif node.spark_function == "select_dataframe":
+            if len(inputs) != 1:
+                raise ValueError("Drop column operation requires exactly one input DataFrame.")
+            # node.output = inputs[0].select(node.params["columns"])
+            #df.select(df.name, (df.age + 10).alias('age')).show()
+            columns_to_select = node.params.get("columns",[])
+
+            # Validate that all specified columns exist in the DataFrame
+            missing_columns = [col for col in columns_to_select if col not in inputs[0].columns]
+            if missing_columns:
+                raise ValueError(f"The following columns are missing in the DataFrame: {missing_columns}")
+
+            node.output = inputs[0].select(columns_to_select)
+
         else:
-            raise ValueError(f"Unsupported transformation function: {node.spark_function}")
+                raise ValueError(f"Unsupported transformation function: {node.spark_function}")
 

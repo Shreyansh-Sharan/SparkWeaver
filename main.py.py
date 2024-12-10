@@ -42,19 +42,21 @@ if __name__ == "__main__":
         {"id": "CSV_SOURCE", "function": "read_csv", "params": {"path": "dbfs:/FileStore/tables/Product.csv"}},
         {"id": "PARQUET_SOURCE", "function": "read_parquet", "params": {"path": "dbfs:/FileStore/tables/SalesOrderDetail_1.parquet"}},
         {"id": "SQL_SOURCE", "function": "read_sql", "params": {"host": "psslp-genai.database.windows.net","port":"1433","user":"sqladmin","password":"sql@1234","database":"AdventureWorks2022","table":"Sales.ShoppingCartItem"}},
+        {"id": "SELECTED_COLUMNS", "function": "select_dataframe", "params": {"columns": ["ProductID","LineTotal"]}, "inputs": ["PARQUET_SOURCE"]}
+
         
-        # JOIN TABLE TEST
-        {"id": "Join_Sales_Order_With_Product", "function": "join", "params": {"Input0": "ProductID","Input1":"ProductID", "joinType":"right"}, "inputs": ["CSV_SOURCE", "PARQUET_SOURCE"]},
+    #     # JOIN TABLE TEST
+    #     {"id": "Join_Sales_Order_With_Product", "function": "join", "params": {"Input0": "ProductID","Input1":"ProductID", "joinType":"right"}, "inputs": ["CSV_SOURCE", "PARQUET_SOURCE"]},
         
-        {"id": "Join_Product_With_Other", "function": "join", "params": {"Input0": "ProductID","Input1":"ProductID", "joinType":"left"}, "inputs": ["Join_Sales_Order_With_Product", "SQL_SOURCE"]},
+    #     {"id": "Join_Product_With_Other", "function": "join", "params": {"Input0": "ProductID","Input1":"ProductID", "joinType":"left"}, "inputs": ["Join_Sales_Order_With_Product", "SQL_SOURCE"]},
         
-        {"id": "Join_Product_With_Other_test", "function": "join", "params": {"Input0": "ProductID","Input1":"ProductID", "joinType":"inner"}, "inputs": ["Join_Sales_Order_With_Product", "Join_Product_With_Other"]},
+    #     {"id": "Join_Product_With_Other_test", "function": "join", "params": {"Input0": "ProductID","Input1":"ProductID", "joinType":"inner"}, "inputs": ["Join_Sales_Order_With_Product", "Join_Product_With_Other"]},
         
-        # DROP TABLE TEST
-        {"id": "Drops", "function": "drop_column", "params": {"column":"ProductNumber"}, "inputs": ["Join_Product_With_Other_test"]},
-        {"id": "Drops_col2", "function": "drop_column", "params": {"column":"MakeFlag"}, "inputs": ["Drops"]},
-        {"id": "Drops_col3", "function": "drop_column", "params": {"column":"ProductID"}, "inputs": ["Drops_col2"]}
-      ]
+    #     # DROP TABLE TEST
+    #     {"id": "Drops", "function": "drop_column", "params": {"column":"ProductNumber"}, "inputs": ["Join_Product_With_Other_test"]},
+    #     {"id": "Drops_col2", "function": "drop_column", "params": {"column":"MakeFlag"}, "inputs": ["Drops"]},
+    #     {"id": "Drops_col3", "function": "drop_column", "params": {"column":"ProductID"}, "inputs": ["Drops_col2"]}
+       ]
     }
 
     # Build and execute the graph
